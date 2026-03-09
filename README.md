@@ -32,7 +32,7 @@
 * **🌐 项目门户**: [https://parse.ucmao.cn/](https://parse.ucmao.cn/) (扫码引导页)
 * **⚙️ 管理后台**: [https://parse.ucmao.cn/admin/](https://parse.ucmao.cn/admin/)
     * 演示者: `guest` / `guest123` （仅查看权限，部分功能需部署后使用）
-* **🧩 小程序端**: 扫描下方太阳码进行体验
+* **🧩 小程序端**: 扫描下方太阳码进行体验（被同行举报下架了...）
 
 <p align="center">
 <img src="static/images/qr_code.jpg" width="180" alt="优创猫去水印太阳码">
