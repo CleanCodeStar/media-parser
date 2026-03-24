@@ -8,14 +8,16 @@ from utils.common_utils import make_response
 bp = Blueprint('parse', __name__)
 
 
-@bp.route('/parse', methods=['POST'])
+@bp.route('/video', methods=['GET', 'POST'])
 def parse():
     try:
-        data = request.json
-        text = data.get('text')
+        # 获取 URL 参数或 JSON Body 中的 url
+        url = request.args.get('url') or (request.json.get('url') if request.is_json else None)
+        if not url:
+            return make_response(400, "缺少 'url' 路径参数"), 400
         
         # 1. 解析基础信息
-        redirect_url = WebFetcher.fetch_redirect_url(UrlParser.get_url(text))
+        redirect_url = WebFetcher.fetch_redirect_url(UrlParser.get_url(url))
         platform = DOMAIN_TO_NAME.get(UrlParser.get_domain(redirect_url))
         real_url = UrlParser.extract_video_address(redirect_url)
         logger.debug(f'real_url {real_url}')

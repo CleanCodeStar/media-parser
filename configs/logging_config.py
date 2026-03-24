@@ -3,7 +3,7 @@ from pathlib import Path
 from logging.handlers import RotatingFileHandler
 
 # 使用 pathlib 创建目录
-log_path = Path('logs/parse_ucmao.log')
+log_path = Path('logs/media_parse.log')
 log_path.parent.mkdir(parents=True, exist_ok=True)
 
 # 配置日志格式
