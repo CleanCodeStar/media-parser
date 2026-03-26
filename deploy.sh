@@ -25,8 +25,8 @@ if ! command -v docker compose &> /dev/null && ! docker compose version &> /dev/
 fi
 
 # 2. 检查配置文件
-if [ ! -f "docker compose.yml" ]; then
-    echo -e "${RED}[错误] 当前目录下未发现 docker compose.yml，请在项目根目录运行此脚本。${NC}"
+if [ ! -f "docker-compose.yml" ]; then
+    echo -e "${RED}[错误] 当前目录下未发现 docker-compose.yml，请在项目根目录运行此脚本。${NC}"
     exit 1
 fi
 
