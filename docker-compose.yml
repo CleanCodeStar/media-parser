@@ -4,6 +4,8 @@ services:
     build: .
     container_name: media-parser-backend
     restart: always
+    networks:
+      - ink-away-network
     ports:
       - "8051:8051"
     volumes:
