@@ -1,6 +1,6 @@
 
 services:
-  web:
+  media-parser-backend:
     build: .
     container_name: media-parser-backend
     restart: always
@@ -13,3 +13,9 @@ services:
     # 设置容器内的时区为本地时区
     environment:
       - TZ=Asia/Shanghai
+    # 限制日志大小，防止生产环境磁盘爆满 (Log Rotation)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
