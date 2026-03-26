@@ -5,7 +5,7 @@ services:
     container_name: media-parser-backend
     restart: always
     networks:
-      - ink-away-network
+      - shared-network  # 改为共享网络
     ports:
       - "8051:8051"
     volumes:
@@ -23,5 +23,5 @@ services:
         max-file: "3"
 
 networks:
-  ink-away-network:
-    driver: bridge
+  shared-network:
+    external: true # 使用外部网络
