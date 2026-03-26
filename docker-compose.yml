@@ -21,3 +21,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+networks:
+  ink-away-network:
+    driver: bridge
