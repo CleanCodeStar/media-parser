@@ -37,7 +37,7 @@ docker-compose down --remove-orphans
 # 4. 构建并启动服务
 echo -e "${GREEN}3. 正在构建并后台启动容器...${NC}"
 # 使用 --build 强制重新构建镜像，确保代码更新已包含在内
-docker-compose up -d --build
+compose up -d --build
 
 # 5. 清理虚悬镜像（节省磁盘空间）
 echo -e "${GREEN}4. 清理构建过程中产生的虚悬镜像...${NC}"
