@@ -19,14 +19,14 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-if ! command -v docker-compose &> /dev/null && ! docker compose version &> /dev/null; then
-    echo -e "${RED}[错误] 未检测到 docker-compose，请先安装 Docker Compose。${NC}"
+if ! command -v docker compose &> /dev/null && ! docker compose version &> /dev/null; then
+    echo -e "${RED}[错误] 未检测到 docker compose，请先安装 Docker Compose。${NC}"
     exit 1
 fi
 
 # 2. 检查配置文件
-if [ ! -f "docker-compose.yml" ]; then
-    echo -e "${RED}[错误] 当前目录下未发现 docker-compose.yml，请在项目根目录运行此脚本。${NC}"
+if [ ! -f "docker compose.yml" ]; then
+    echo -e "${RED}[错误] 当前目录下未发现 docker compose.yml，请在项目根目录运行此脚本。${NC}"
     exit 1
 fi
 
@@ -57,4 +57,4 @@ echo -e "${GREEN}===============================================================
 echo -e "\n${YELLOW}提示: ${NC}"
 echo -e "  - 查看实时日志: ${GREEN}docker logs -f media-parser-backend${NC}"
 echo -e "  - 查看应用端口: ${GREEN}http://localhost:8051${NC}"
-echo -e "  - 停止应用: ${GREEN}docker-compose stop${NC}"
+echo -e "  - 停止应用: ${GREEN}docker compose stop${NC}"
