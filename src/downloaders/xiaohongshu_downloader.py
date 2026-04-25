@@ -1,6 +1,8 @@
 import re
 import json
+import random
 from src.downloaders.base_downloader import BaseDownloader
+from configs.general_constants import USER_AGENT_PC
 from configs.logging_config import get_logger
 logger = get_logger(__name__)
 
@@ -10,8 +12,9 @@ class XiaohongshuDownloader(BaseDownloader):
         super().__init__(real_url)
         self.headers = {
             "content-type": "application/json; charset=UTF-8",
-            'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-            'referer': 'https://www.xiaohongshu.com/'
+            "User-Agent": random.choice(USER_AGENT_PC),
+            "referer": "https://www.xiaohongshu.com/",
+            "Cookie": "a1=18f1a1b1c1d1e1f1g1h1i1j1k1l1m1n1o1p1q1r1s; web_session=0400696c6b6564617461"
         }
         # 获取 HTML 并解析 JSON 状态
         html_content = self.fetch_html_content()

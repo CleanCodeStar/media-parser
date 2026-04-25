@@ -14,10 +14,9 @@ class WebFetcher:
             # 判断是否为B站域名，添加特殊headers
             extra_headers = {}
             domain = UrlParser.get_domain(url)
-            if domain == 'www.bilibili.com' or domain == 'bilibili.com':
+            if domain in ['www.bilibili.com', 'bilibili.com', 'www.xiaohongshu.com', 'xiaohongshu.com', 'xhslink.com']:
                 extra_headers = {
-                    'Referer': 'https://www.bilibili.com/',
-                    'Cookie': f'bili_jct=xxx; SESSDATA=xxx; DedeUserID=xxx; bp_trace_id=ox{random.randint(10000000, 99999999)}'
+                    'Referer': f'https://{domain}/' if 'xhslink' not in domain else 'https://www.xiaohongshu.com/',
                 }
 
             for _ in range(max_redirects):

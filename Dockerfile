@@ -10,6 +10,11 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # 确保在输出日志时不会被缓冲，便于查看 Docker 日志
 ENV PYTHONUNBUFFERED 1
 
+# 安装系统依赖 (ffmpeg 用于音视频合并)
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
 # 复制依赖说明文件并配置国内镜像源后安装 Python 包
 COPY requirements.txt /app/
 RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \
