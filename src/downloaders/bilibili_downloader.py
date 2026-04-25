@@ -35,7 +35,9 @@ class BilibiliDownloader(BaseDownloader):
         super().__init__(real_url)
         self.headers = {
             'User-Agent': random.choice(USER_AGENT_PC),
-            'referer': 'https://www.bilibili.com/'
+            'referer': 'https://www.bilibili.com/',
+            # 添加模拟Cookie以绕过 412
+            'Cookie': f'bili_jct=xxx; SESSDATA=xxx; DedeUserID=xxx; DedeUserID__ckMd5=xxx; bp_trace_id=ox%{ random.randint(10000000, 99999999) }'
         }
         self.bvid = self._extract_bvid(real_url)
         # 通过 API 获取视频元信息

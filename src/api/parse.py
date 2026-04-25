@@ -15,11 +15,14 @@ def parse():
         url = request.args.get('url') or (request.json.get('url') if request.is_json else None)
         if not url:
             return make_response(400, "缺少 'url' 路径参数"), 400
-        
+
         # 1. 解析基础信息
-        redirect_url = WebFetcher.fetch_redirect_url(UrlParser.get_url(url))
-        platform = DOMAIN_TO_NAME.get(UrlParser.get_domain(redirect_url))
-        real_url = UrlParser.extract_video_address(redirect_url)
+        origin_url = UrlParser.get_url(url)
+        redirect_url = WebFetcher.fetch_redirect_url(origin_url)
+        # 如果重定向失败，使用原始URL作为备用
+        final_url = redirect_url if redirect_url else origin_url
+        platform = DOMAIN_TO_NAME.get(UrlParser.get_domain(final_url))
+        real_url = UrlParser.extract_video_address(final_url)
         logger.debug(f'real_url {real_url}')
 
         if not platform:
@@ -37,7 +40,7 @@ def parse():
 
         # 4. 统一转换 HTTPS
         data_dict = {
-            'video_id': UrlParser.get_video_id(redirect_url),
+            'video_id': UrlParser.get_video_id(final_url),
             'platform': platform,
             'title': content_data['title'],
             'video_url': UrlParser.convert_to_https(content_data['video_url']),
