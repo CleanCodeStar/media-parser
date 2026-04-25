@@ -1,25 +1,22 @@
 import re
 import json
-import random
-from src.downloaders.base_downloader import BaseDownloader
-from configs.general_constants import USER_AGENT_PC
+from src.parsers.base_parser import BaseParser
 from configs.logging_config import get_logger
 logger = get_logger(__name__)
 
 
-class XiaohongshuDownloader(BaseDownloader):
+class XiaohongshuParser(BaseParser):
     def __init__(self, real_url):
         super().__init__(real_url)
         self.headers = {
             "content-type": "application/json; charset=UTF-8",
-            "User-Agent": random.choice(USER_AGENT_PC),
-            "referer": "https://www.xiaohongshu.com/",
-            "Cookie": "a1=18f1a1b1c1d1e1f1g1h1i1j1k1l1m1n1o1p1q1r1s; web_session=0400696c6b6564617461"
+            'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+            'referer': 'https://www.xiaohongshu.com/'
         }
         # 获取 HTML 并解析 JSON 状态
         html_content = self.fetch_html_content()
         pattern = re.compile(r'window\.__INITIAL_STATE__\s*=\s*(\{.*\})', re.DOTALL)
-        json_str = BaseDownloader.parse_html_data(html_content, pattern)
+        json_str = BaseParser.parse_html_data(html_content, pattern)
 
         # 初始化数据容器
         self.note_data = {}
@@ -72,14 +69,27 @@ class XiaohongshuDownloader(BaseDownloader):
         for image in image_list:
             url = image.get('urlDefault', '')
             if url:
-                image_url_list.append(url.replace("\\u002F", "/"))
+                img_data = url.replace("\\u002F", "/")
+                # 检查是否有livePhoto
+                if image.get('livePhoto', False):
+                    stream = image.get('stream', {})
+                    h264_data = stream.get('h264', [])
+                    if h264_data:
+                        master_url = h264_data[0].get('masterUrl', '')
+                        if master_url:
+                            img_data = {
+                                'url': img_data,
+                                'live_photo_url': master_url.replace("\\u002F", "/")
+                            }
+                image_url_list.append(img_data)
         return image_url_list
 
 
 if __name__ == '__main__':
-    real_url = 'https://www.xiaohongshu.com/discovery/item/699ec585000000002602eb4c?xsec_token=ABxyNDjNzyo7x607F-O1PLIKtfYSPsQPi8ZscMk3c8JCI='
+    # 测试链接
+    test_url = 'https://www.xiaohongshu.com/discovery/item/699ec585000000002602eb4c?xsec_token=ABxyNDjNzyo7x607F-O1PLIKtfYSPsQPi8ZscMk3c8JCI='
 
-    dl = XiaohongshuDownloader(real_url)
+    dl = XiaohongshuParser(test_url)
 
     print("-" * 30)
     print(f"作者信息：{dl.get_author_info()}")
