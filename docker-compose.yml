@@ -15,6 +15,11 @@ services:
     # 设置容器内的时区为本地时区
     environment:
       - TZ=Asia/Shanghai
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:-rDl9zfGPFvXcYBY5Cmlh}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY:-294SLh9j7uIJYxoaGCG8asT3W52pq8PXNePZ0ltJ}
+      - MINIO_BUCKET=${MINIO_BUCKET:-ink-away}
+      - MINIO_DOWNLOAD_URL=${MINIO_DOWNLOAD_URL:-https://img.cleancoder.xyz/}
     # 限制日志大小，防止生产环境磁盘爆满 (Log Rotation)
     logging:
       driver: "json-file"
