@@ -7,18 +7,28 @@ from configs.general_constants import USER_AGENT_PC, DOMAIN_TO_NAME
 
 
 class WebFetcher:
-    headers = {
-        "content-type": "application/json; charset=UTF-8",
-        "User-Agent": random.choice(USER_AGENT_PC)
-    }
-
     @staticmethod
     def fetch_redirect_url(url, max_redirects=5):
         try:
             current_url = url
+            # 判断是否为B站域名，添加特殊headers
+            extra_headers = {}
+            domain = UrlParser.get_domain(url)
+            if domain == 'www.bilibili.com' or domain == 'bilibili.com':
+                extra_headers = {
+                    'Referer': 'https://www.bilibili.com/',
+                    'Cookie': f'bili_jct=xxx; SESSDATA=xxx; DedeUserID=xxx; bp_trace_id=ox{random.randint(10000000, 99999999)}'
+                }
+
             for _ in range(max_redirects):
+                # 合并headers
+                headers = {
+                    "content-type": "application/json; charset=UTF-8",
+                    "User-Agent": random.choice(USER_AGENT_PC),
+                    **extra_headers
+                }
                 # 发送请求，禁止重定向
-                resp = requests.get(current_url, headers=WebFetcher.headers, allow_redirects=False, timeout=5)
+                resp = requests.get(current_url, headers=headers, allow_redirects=False, timeout=5)
                 resp.raise_for_status()
                 # 获取重定向后的URL
                 redirect_url = resp.headers.get("location")
